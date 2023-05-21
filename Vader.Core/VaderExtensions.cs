@@ -6,7 +6,7 @@ using Vader.Core.UiComponents;
 using Vader.Core.Web;
 
 namespace Vader.Core {
-    public static class Extensions {
+    public static class VaderExtensions {
         public static IApplicationBuilder AddVaderFramework(this IApplicationBuilder app, VaderRequestHandler[] handlers) {
             var webpages = new Dictionary<string, VaderWebPage>();
             foreach(var handler in handlers) {
@@ -16,25 +16,26 @@ namespace Vader.Core {
                 }
             }
 
+
             var _routeBuilder = new RouteBuilder(app);
             foreach(var route in webpages) {
                 _routeBuilder.MapRoute(route.Key,
                     async context => {
-                        var route = context.Request.Path.Value.Trim('/');
+                        
+                        var baseUri = new UriBuilder(context.Request.Scheme, context.Request.Host.Host, context.Request.Host.Port ?? -1).Uri.AbsoluteUri;
+                        var route = context.Request.Path.Value.TrimIf(context.Request.Path.Value != "/", '/');
                         context.Response.ContentType = "text/html;charset=utf-8";
                         var webForm = webpages[route];
                         if(webForm != null) {
                             if(!context.Request.HasFormContentType)
-                                await context.Response.WriteAsync(VaderLayout.Render(webForm.Render()));
+                                await context.Response.WriteAsync(VaderLayout.Render(baseUri, webpages, webForm, errors: Array.Empty<string>()));
                             else {
                                 var formCollection = context.Request.Form;
                                 var validationResult = webForm.Validate(formCollection);
                                 if(validationResult.IsValid) {
                                     webForm.Process(formCollection);
                                 } else {
-                                    var formComponent = (VaderForm)webForm.Render();
-                                    formComponent.SetErrors(validationResult.Message);
-                                    await context.Response.WriteAsync(VaderLayout.Render(formComponent));
+                                    await context.Response.WriteAsync(VaderLayout.Render(baseUri, webpages, webForm, validationResult.Errors));
                                 }
                             }
 
@@ -48,5 +49,6 @@ namespace Vader.Core {
 
             return app;
         }
+
     }
 }

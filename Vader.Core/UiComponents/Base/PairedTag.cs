@@ -4,9 +4,10 @@ namespace Vader.Core.UiComponents.Base {
 
     public class PairedTag: HtmlBase {
         private string _tag;
-        public PairedTag(string tag, string text = "") {
+        public PairedTag(string tag,  string text = "", string cssClass = "") {
             _tag = tag;
             Text = text;
+            CssClass = cssClass;
         }
         public override string ToHtml() {
             var sb = new StringBuilder();

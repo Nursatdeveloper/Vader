@@ -10,13 +10,14 @@ namespace Vader.Core.UiComponents {
         public InputType Type { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
-        public Input(InputType type, string name, string value = "") {
+        public Input(InputType type, string name, string value = "", string cssClass = "") {
             Type = type;
             Name = name;
             Value = value;
+            CssClass = cssClass;
         }
         public override string ToHtml() {
-            return $"<input type='{Type.ToString()}' name='{Name}' value='{Value}' />";
+            return $"<input type='{Type.ToString()}' class='{CssClass}' name='{Name}' value='{Value}' />";
         }
 
         public override HtmlBase Append(HtmlBase html) {

@@ -25,7 +25,6 @@ namespace Vader.Core.UiComponents {
 
         public override string ToHtml() {
             var sb = new StringBuilder();
-            sb.Append($"<h2>{_title}</h2>");
             sb.Append($"<form action='{_action}' method='{_method}' >");
             foreach(var error in _validationErrors) {
                 sb.Append($"<span style='color:red;'>Error: {error}</span>");

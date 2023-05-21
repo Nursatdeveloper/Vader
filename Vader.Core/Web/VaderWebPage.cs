@@ -6,16 +6,23 @@ namespace Vader.Core.Web {
         private string _route;
         private string _name;
         private string _title;
+        private bool _isCallback = false;
         public string Route { get { return _route; } }
         public string Name { get { return _name; } }
         public string Title { get { return _title; } }
-        public VaderWebPage(string name, string title) {
-            _name = name;
-            _title = title;
+        public bool IsCallBack { get { return _isCallback; } }
+        public VaderWebPage(string webPageName, string webPageTitle) {
+            _name = webPageName;
+            _title = webPageTitle;
         }
 
         public VaderWebPage OnRoute(string route) {
             _route = route;
+            return this;
+        }
+
+        public VaderWebPage AsCallback() {
+            _isCallback = true;
             return this;
         }
 
@@ -26,6 +33,6 @@ namespace Vader.Core.Web {
 
     }
 
-    public record ValidationResult(bool IsValid, string[] Message);
+    public record ValidationResult(bool IsValid, string[] Errors);
 
 }

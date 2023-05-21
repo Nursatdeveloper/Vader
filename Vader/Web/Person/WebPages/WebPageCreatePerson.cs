@@ -9,13 +9,17 @@ namespace Vader.Web.Person.WebPages {
 
         public override HtmlBase Render() {
             return new VaderForm("/user/create", Title)
-                .Append(new PairedTag("div")
-                    .Append(new PairedTag("label", "Name"))
-                    .Append(new Input(InputType.text, "Name"))
+                .Append(new PairedTag("div", cssClass: "mb-3 row")
+                    .Append(new PairedTag("label", text: "Name", cssClass: "col-sm-2 col-form-label"))
+                    .Append(new PairedTag("div", cssClass: "col-sm-10")
+                        .Append(new Input(InputType.text, "Name", cssClass: "form-control"))
+                    )
                 )
-                .Append(new PairedTag("div")
-                    .Append(new PairedTag("label", "Password"))
-                    .Append(new Input(InputType.text, "Password"))
+                .Append(new PairedTag("div", cssClass: "mb-3 row")
+                    .Append(new PairedTag("label", text: "Password", cssClass: "col-sm-2 col-form-label"))
+                    .Append(new PairedTag("div", cssClass:"col-sm-10")
+                        .Append(new Input(InputType.text, "Password", cssClass: "form-control"))
+                    )
                 );
         }
 
